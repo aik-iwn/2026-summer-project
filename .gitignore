@@ -1,2 +1,4 @@
 build/
 *.exe
+yfinance_test.py
+data.csv
