@@ -16,6 +16,11 @@ int Account::getPosition() const
 
 bool Account::buy(string date, double price, int share)
 {
+    if (share <= 0)
+    {
+        cerr << "[" << date << "] 股數不能小於等於0，交易失敗\n";
+        return false;
+    }
     double stockcost = price * share;
     double comission = (int)(0.1425 * 0.01 * stockcost);
     if (comission < 20)
@@ -25,7 +30,7 @@ bool Account::buy(string date, double price, int share)
     double total = comission + stockcost;
     if (total > balance)
     {
-        cerr << "[" << date << "] 餘額不足，交易失敗";
+        cerr << "[" << date << "] 餘額不足，交易失敗\n";
         return false;
     }
     balance -= total;
@@ -44,9 +49,14 @@ bool Account::buy(string date, double price, int share)
 
 bool Account::sell(string date, double price, int share)
 {
+    if (share <= 0)
+    {
+        cerr << "[" << date << "] 股數不能小於等於0，交易失敗\n";
+        return false;
+    }
     if (share > position)
     {
-        cerr << "[" << date << "] 股數不足，交易失敗";
+        cerr << "[" << date << "] 股數不足，交易失敗\n";
         return false;
     }
     double stockearn = price * share;
