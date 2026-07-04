@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
+#include <chrono> //用來計算程式跑出結果所花的時間
 #include "TradeData.h"
 #include "CSVReader.h"
-#include <chrono> //用來計算程式跑出結果所花的時間
+#include "Account.h"
 using namespace std;
 
 int main()
