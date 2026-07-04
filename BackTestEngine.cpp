@@ -12,11 +12,11 @@ void BackTestEngine::run()
         const auto &current_data = priceDataList[i];
         if (i == 0)
         {
-            bool test_buy = my_ac.buy(current_data.date, current_data.low, 10000);
+            bool test_buy = my_ac.buy(current_data.date, current_data.low, 100);
         }
         if (i == (total_days - 1))
         {
-            bool test_sell = my_ac.sell(current_data.date, current_data.low, 10000);
+            bool test_sell = my_ac.sell(current_data.date, current_data.low, 100);
         }
     }
     cout << my_ac.getBalance() << " " << my_ac.getPosition() << "\n";

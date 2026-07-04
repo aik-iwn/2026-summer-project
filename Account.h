@@ -1,14 +1,12 @@
 #pragma once
 
-#include <iostream>
 #include <string>
 #include <vector>
-using namespace std;
 
 struct Transaction
 {
-    string date;
-    string type; //"BUY" or "SELL"
+    std::string date;
+    std::string type; //"BUY" or "SELL"
     double price;
     int shares;
     double fee;         // 手續費
@@ -19,15 +17,15 @@ struct Transaction
 class Account
 {
 private:
-    double balance;               // 帳戶目前餘額
-    int position;                 // 目前總持有股數
-    double initialCapital;        // 初始總投入金額
-    vector<Transaction> tradeLog; // 交易紀錄
+    double balance;                    // 帳戶目前餘額
+    int position;                      // 目前總持有股數
+    double initialCapital;             // 初始總投入金額
+    std::vector<Transaction> tradeLog; // 交易紀錄
 public:
     Account(double initial_captial) : initialCapital(initial_captial), balance(initial_captial), position(0) {};
-    bool buy(string date, double price, int share);
-    bool sell(string date, double price, int share);
+    bool buy(std::string date, double price, int share);
+    bool sell(std::string date, double price, int share);
     double getBalance() const; // 剩餘多少錢
     int getPosition() const;
-    const vector<Transaction> &getTradeLog() const { return tradeLog; }; // 不會修改Account裡面變數，回傳時也無法修改
+    const std::vector<Transaction> &getTradeLog() const { return tradeLog; }; // 不會修改Account裡面變數，回傳時也無法修改
 };

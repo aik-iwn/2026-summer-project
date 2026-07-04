@@ -1,98 +1,67 @@
 #pragma once
 
+#include <iostream> //使用cerr
+#include <string>
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <exception> //用來抓錯誤
 #include "TradeData.h"
-using namespace std;
 
 class CSVReader
 {
 public:
-    static vector<TradeData> readfile(string filename)
+    static std::vector<TradeData> readfile(const std::string &filename)
     {
-        vector<TradeData> data;
+        std::vector<TradeData> data;
         data.reserve(3000); // 預設記憶體大小，並非實際size大小
-        ifstream file(filename);
+        std::ifstream file(filename);
         if (!file.is_open())
         {
             return data;
         }
-        string line;
+        std::string line;
         getline(file, line);
         while (getline(file, line))
         {
-            stringstream ss(line); // 切割字串
-            string token;
+            std::stringstream ss(line); // 切割字串
+            std::string token;
             TradeData datatem;
             if (getline(ss, token, ','))
             {
                 datatem.date = token;
             }
-            if (getline(ss, token, ','))
+            try
             {
-                try
+                if (getline(ss, token, ','))
                 {
-                    datatem.open = stod(token);
+                    datatem.open = std::stod(token);
                 }
-                catch (const exception &e)
+                if (getline(ss, token, ','))
                 {
-                    cerr << "資料有誤，錯誤原因:" << e.what() << "\n";
-                    continue;
+                    datatem.high = std::stod(token);
+                }
+                if (getline(ss, token, ','))
+                {
+                    datatem.low = std::stod(token);
+                }
+                if (getline(ss, token, ','))
+                {
+                    datatem.close = std::stod(token);
+                }
+                if (getline(ss, token, ','))
+                {
+                    if (!token.empty() && token.back() == '\r')
+                    {
+                        token.pop_back(); // 把每一行結尾的'r'字元給刪除
+                    }
+                    datatem.volume = std::stoll(token);
                 }
             }
-            if (getline(ss, token, ','))
+            catch (const std::exception &e)
             {
-                try
-                {
-                    datatem.high = stod(token);
-                }
-                catch (const exception &e)
-                {
-                    cerr << "資料有誤，錯誤原因:" << e.what() << "\n";
-                    continue;
-                }
-            }
-            if (getline(ss, token, ','))
-            {
-                try
-                {
-                    datatem.low = stod(token);
-                }
-                catch (const exception &e)
-                {
-                    cerr << "資料有誤，錯誤原因:" << e.what() << "\n";
-                    continue;
-                }
-            }
-            if (getline(ss, token, ','))
-            {
-                try
-                {
-                    datatem.close = stod(token);
-                }
-                catch (const exception &e)
-                {
-                    cerr << "資料有誤，錯誤原因:" << e.what() << "\n";
-                    continue;
-                }
-            }
-            if (getline(ss, token, ','))
-            {
-                if (!token.empty() && token.back() == '\r')
-                {
-                    token.pop_back(); // 把每一行結尾的'r'字元給刪除
-                }
-                try
-                {
-                    datatem.volume = stoll(token);
-                }
-                catch (const exception &e)
-                {
-                    cerr << "資料有誤，錯誤原因:" << e.what() << "\n";
-                    continue;
-                }
+                std::cerr << "資料有誤，錯誤原因:" << e.what() << "\n";
+                continue;
             }
             data.push_back(datatem);
         }
