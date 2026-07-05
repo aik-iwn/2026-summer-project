@@ -25,6 +25,7 @@ public:
     Account(double initial_captial) : initialCapital(initial_captial), balance(initial_captial), position(0) {};
     bool buy(std::string date, double price, int share);
     bool sell(std::string date, double price, int share);
+    double getInitialCapital() const { return initialCapital; };
     double getBalance() const; // 剩餘多少錢
     int getPosition() const;
     const std::vector<Transaction> &getTradeLog() const { return tradeLog; }; // 不會修改Account裡面變數，回傳時也無法修改
