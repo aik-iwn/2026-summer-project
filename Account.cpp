@@ -35,6 +35,7 @@ bool Account::buy(string date, double price, int share)
     }
     balance -= total;
     position += share;
+    total_holding_cost += total;
     Transaction t;
     t.date = date;
     t.type = "BUY";
@@ -44,6 +45,12 @@ bool Account::buy(string date, double price, int share)
     t.tax = 0;
     t.totalAmount = total;
     tradeLog.push_back(t);
+    StockDetail s;
+    s.date = date;
+    s.purchasePrice = price;
+    s.shares = share;
+    s.totalCost = total;
+    inventory.push_back(s);
     return true;
 }
 
@@ -59,6 +66,28 @@ bool Account::sell(string date, double price, int share)
         cerr << "[" << date << "] 股數不足，交易失敗\n";
         return false;
     }
+    int share_to_sell = share;      // 要賣的股數
+    double total_realized_cost = 0; // 預計賣出所花費總成本
+    while (share_to_sell > 0 && !inventory.empty())
+    {
+        auto &oldest = inventory.front();
+        if (oldest.shares > share_to_sell)
+        {
+            double remove_cost = oldest.totalCost * share_to_sell / oldest.shares;
+            total_realized_cost += remove_cost;
+            total_holding_cost -= remove_cost;
+            oldest.shares -= share_to_sell;
+            oldest.totalCost -= remove_cost;
+            share_to_sell = 0;
+        }
+        else
+        {
+            share_to_sell -= oldest.shares;
+            total_realized_cost += oldest.totalCost;
+            total_holding_cost -= oldest.totalCost;
+            inventory.pop_front();
+        }
+    }
     double stockearn = price * share;
     double comission = (int)(0.1425 * 0.01 * stockearn);
     double tax = (int)(0.3 * 0.01 * stockearn);
@@ -69,6 +98,11 @@ bool Account::sell(string date, double price, int share)
     double total = stockearn - comission - tax;
     balance += total;
     position -= share;
+    totalTrades++;
+    if (total - total_realized_cost > 0)
+    {
+        winTrades++;
+    }
     Transaction t;
     t.date = date;
     t.type = "SELL";

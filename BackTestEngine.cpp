@@ -40,4 +40,7 @@ void BackTestEngine::run()
     }
     cout << my_ac.getBalance() << " " << my_ac.getPosition() << "\n";
     cout << "最大回撤:" << max_drawDown * 100 << "%\n";
+    cout << "總賣出次數:" << my_ac.getTotalTrades() << "\n";
+    cout << "總獲利次數:" << my_ac.getWinTrades() << "\n";
+    cout << "總虧損次數:" << my_ac.getTotalTrades() - my_ac.getWinTrades() << "\n";
 }
