@@ -4,16 +4,6 @@
 
 using namespace std;
 
-double Account::getBalance() const
-{
-    return balance;
-}
-
-int Account::getPosition() const
-{
-    return position;
-}
-
 bool Account::buy(string date, double price, int share)
 {
     if (share <= 0)
@@ -44,6 +34,7 @@ bool Account::buy(string date, double price, int share)
     t.fee = comission;
     t.tax = 0;
     t.totalAmount = total;
+    t.realizedProfit = 0;
     tradeLog.push_back(t);
     StockDetail s;
     s.date = date;
@@ -103,6 +94,7 @@ bool Account::sell(string date, double price, int share)
     {
         winTrades++;
     }
+    netProfit += (total - total_realized_cost);
     Transaction t;
     t.date = date;
     t.type = "SELL";
@@ -111,6 +103,7 @@ bool Account::sell(string date, double price, int share)
     t.fee = comission;
     t.tax = tax;
     t.totalAmount = total;
+    t.realizedProfit = (total - total_realized_cost);
     tradeLog.push_back(t);
     return true;
 }

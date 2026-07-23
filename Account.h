@@ -13,7 +13,8 @@ struct Transaction
     int shares;
     double fee;         // 手續費(買入賣出都有)
     double tax;         // 稅金(賣出才有)
-    double totalAmount; // price*shares+tax+fee
+    double totalAmount; // price*shares-tax-fee
+    double realizedProfit;
 };
 
 // 目前持有的股票明細
@@ -31,6 +32,7 @@ private:
     double balance;                    // 帳戶目前餘額
     double initialCapital;             // 初始總投入金額
     int position;                      // 目前總持有股數
+    double netProfit = 0;              // 淨利
     std::vector<Transaction> tradeLog; // 交易紀錄
     double total_holding_cost = 0;     // 目前總持有成本
     std::deque<StockDetail> inventory; // 股票持有明細管理倉
@@ -41,8 +43,9 @@ public:
     bool buy(std::string date, double price, int share);
     bool sell(std::string date, double price, int share);
     double getInitialCapital() const { return initialCapital; };
-    double getBalance() const; // 剩餘多少錢
-    int getPosition() const;
+    double getBalance() const { return balance; }; // 剩餘多少錢
+    int getPosition() const { return position; };
+    double getNetProfit() const { return netProfit; };
     int getTotalTrades() const { return totalTrades; };
     int getWinTrades() const { return winTrades; };
     const std::vector<Transaction> &getTradeLog() const { return tradeLog; }; // 不會修改Account裡面變數，回傳時也無法修改
