@@ -3,15 +3,17 @@
 #include <vector>
 #include "Account.h"
 #include "TradeData.h"
+#include "Strategy.h"
 
 class BackTestEngine
 {
 private:
     Account my_ac;
     std::vector<TradeData> priceDataList;
+    Strategy *strategy;
 
 public:
-    BackTestEngine(double initial_capital, const std::vector<TradeData> &data);
+    BackTestEngine(double initial_capital, const std::vector<TradeData> &data, Strategy *strat);
     void run();
     double ROI();
 };

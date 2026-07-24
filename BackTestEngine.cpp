@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include "Strategy.h"
 #include "BackTestEngine.h"
 using namespace std;
 
-BackTestEngine::BackTestEngine(double initial_capital, const vector<TradeData> &data) : my_ac(initial_capital), priceDataList(data) {};
+BackTestEngine::BackTestEngine(double initial_capital, const std::vector<TradeData> &data, Strategy *strat) : my_ac(initial_capital), priceDataList(data), strategy(strat) {};
 
 double BackTestEngine::ROI()
 {
@@ -16,20 +17,18 @@ double BackTestEngine::ROI()
 void BackTestEngine::run()
 {
     double peakEquity = my_ac.getInitialCapital(), max_drawDown = 0; // 用來計算最大回撤(Max drawdown)
-    size_t total_days = priceDataList.size();
-    for (size_t t = 1; t < total_days; t++)
+    for (const auto &today : priceDataList)
     {
-        double yesterday_close = priceDataList[t - 1].close;
-        double today_close = priceDataList[t].close;
-        if (today_close < yesterday_close)
+        Signal signal = strategy->generateSignal(today, my_ac);
+        if (signal == Signal::BUY)
         {
-            my_ac.buy(priceDataList[t].date, today_close, 100);
+            my_ac.buy(today.date, today.close, 100);
         }
-        else if (today_close > yesterday_close && my_ac.getPosition())
+        else if (signal == Signal::SELL)
         {
-            my_ac.sell(priceDataList[t].date, today_close, my_ac.getPosition());
+            my_ac.sell(today.date, today.close, my_ac.getPosition());
         }
-        double currentEquity = my_ac.getBalance() + my_ac.getPosition() * today_close;
+        double currentEquity = my_ac.getBalance() + my_ac.getPosition() * today.close;
         peakEquity = max(peakEquity, currentEquity);
         max_drawDown = max(max_drawDown, (peakEquity - currentEquity) / peakEquity);
     }
