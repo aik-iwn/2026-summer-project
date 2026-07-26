@@ -33,7 +33,7 @@ void BackTestEngine::run()
         peakEquity = max(peakEquity, currentEquity);
         max_drawDown = max(max_drawDown, (peakEquity - currentEquity) / peakEquity);
     }
-    // const auto &trade = my_ac.getTradeLog();//交易明細
+    // const auto &trade = my_ac.getTradeLog(); // 交易明細
     // for (const auto &t : trade)
     // {
     //     cout << t.date << " " << t.type << " " << t.price << " " << t.shares << " " << t.fee << " " << t.tax << " " << t.totalAmount << " " << t.realizedProfit << "\n";
@@ -41,6 +41,7 @@ void BackTestEngine::run()
     cout << "剩餘金額:" << my_ac.getBalance() << "\n";
     cout << "剩餘股數:" << my_ac.getPosition() << "\n";
     cout << "淨利所得:" << my_ac.getNetProfit() << "\n";
+    cout << "目前總資產:" << my_ac.getBalance() + my_ac.getPosition() * priceDataList.back().close << "\n";
     cout << "最大回撤:" << max_drawDown * 100 << "%\n";
     cout << "總賣出次數:" << my_ac.getTotalTrades() << "\n";
     cout << "總獲利次數:" << my_ac.getWinTrades() << "\n";
