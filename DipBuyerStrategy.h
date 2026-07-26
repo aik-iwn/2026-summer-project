@@ -8,23 +8,27 @@ private:
     double last_close = -1;
 
 public:
-    Signal generateSignal(const TradeData &today, const Account &ac) override
+    Order generateOrder(const TradeData &today, const Account &ac) override
     {
+        Order order;
         if (last_close < 0)
         {
             last_close = today.close;
-            return Signal ::HOLD;
+            order.action = Signal::HOLD;
+            order.shares = 0;
+            return order;
         }
-        Signal sig = Signal::HOLD;
         if (today.close < last_close)
         {
-            sig = Signal::BUY;
+            order.action = Signal::BUY;
+            order.shares = 100;
         }
         else if (today.close > last_close && ac.getPosition() > 0)
         {
-            sig = Signal::SELL;
+            order.action = Signal::SELL;
+            order.shares = ac.getPosition();
         }
         last_close = today.close;
-        return sig;
+        return order;
     }
 };

@@ -10,9 +10,15 @@ enum class Signal
     HOLD
 };
 
+struct Order
+{
+    Signal action;
+    int shares;
+};
+
 class Strategy
 {
 public:
     virtual ~Strategy() = default;
-    virtual Signal generateSignal(const TradeData &today, const Account &ac) = 0;
+    virtual Order generateOrder(const TradeData &today, const Account &ac) = 0;
 };

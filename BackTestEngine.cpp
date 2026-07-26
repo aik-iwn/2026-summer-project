@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include "Strategy.h"
+#include "DipBuyerStrategy.h"
 #include "BackTestEngine.h"
 using namespace std;
 
@@ -19,24 +20,24 @@ void BackTestEngine::run()
     double peakEquity = my_ac.getInitialCapital(), max_drawDown = 0; // 用來計算最大回撤(Max drawdown)
     for (const auto &today : priceDataList)
     {
-        Signal signal = strategy->generateSignal(today, my_ac);
-        if (signal == Signal::BUY)
+        Order orders = strategy->generateOrder(today, my_ac);
+        if (orders.action == Signal::BUY)
         {
-            my_ac.buy(today.date, today.close, 100);
+            my_ac.buy(today.date, today.close, orders.shares);
         }
-        else if (signal == Signal::SELL)
+        else if (orders.action == Signal::SELL)
         {
-            my_ac.sell(today.date, today.close, my_ac.getPosition());
+            my_ac.sell(today.date, today.close, orders.shares);
         }
         double currentEquity = my_ac.getBalance() + my_ac.getPosition() * today.close;
         peakEquity = max(peakEquity, currentEquity);
         max_drawDown = max(max_drawDown, (peakEquity - currentEquity) / peakEquity);
     }
-    const auto &trade = my_ac.getTradeLog();
-    for (const auto &t : trade)
-    {
-        cout << t.date << " " << t.type << " " << t.price << " " << t.shares << " " << t.fee << " " << t.tax << " " << t.totalAmount << " " << t.realizedProfit << "\n";
-    }
+    // const auto &trade = my_ac.getTradeLog();//交易明細
+    // for (const auto &t : trade)
+    // {
+    //     cout << t.date << " " << t.type << " " << t.price << " " << t.shares << " " << t.fee << " " << t.tax << " " << t.totalAmount << " " << t.realizedProfit << "\n";
+    // }
     cout << "剩餘金額:" << my_ac.getBalance() << "\n";
     cout << "剩餘股數:" << my_ac.getPosition() << "\n";
     cout << "淨利所得:" << my_ac.getNetProfit() << "\n";
