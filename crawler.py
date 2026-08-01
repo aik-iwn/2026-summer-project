@@ -2,7 +2,7 @@ import yfinance as yf
 import pandas as pd
 
 ticker="2330.TW"
-period_str="2603y"
+period_str="10y"
 stock=yf.Ticker(ticker)
 data=stock.history(period=period_str)
 data.reset_index(inplace=True)#將原本為索引值的日期列為新的一欄(inplace=True代表直接在原地修改)

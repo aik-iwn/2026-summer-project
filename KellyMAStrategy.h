@@ -28,14 +28,14 @@ public:
     KellyMAStrategy(size_t shortPeriod = 10,
                     size_t longPeriod = 20,
                     size_t trendPeriod = 60,
-                    size_t volumePeroid = 20,
+                    size_t volumePeroid = 30,
                     double p = 0.65,
-                    double b = 1.5,
-                    double k_frac = 0.7,
-                    double vol_mult = 1.05,
+                    double b = 1.8,
+                    double k_frac = 2.5,
+                    double vol_mult = 1.3,
                     double buffer = 0.98,
                     double min_trade_amount = 15000.0,
-                    double whipsaw_buffer = 0.01,
+                    double whipsaw_buffer = 0.005,
                     double trailing_stop_pct = 0.08)
         : shortMA(shortPeriod),
           longMA(longPeriod),
@@ -118,3 +118,12 @@ public:
         return order;
     }
 };
+/*
+以下為本策略(KellyMAStrategy)原理的細節解釋與說明，採用短、月、季等三均價線(10,20,60)來輔助判斷買入時機，
+並搭配30日均量線來協助判斷空手時量的突破點，此外，使用凱利公式來計算該總資產下應持有多少的股數(參數包含勝率
+、盈虧比、凱利乘數)，另外也有使用額外的指標狀態變數來記錄、確認是否為買進或清倉的時機點，像是:volumeMultiplier(
+均價量乘上這個變數來達成一定的突破量)、cashBuffer(留一手現金避免隔日大漲跳空)、minTradeAmount(最低交易門檻)、
+whipsawBuffer(季量乘上該變數確保已經穩定站上季線)、trailingStopPct(停損比例)等參數。kellyFraction會主要決定投
+入多少的資金，經過大量測試後發現儘管kellyFraction提高(投入資金)會造成最大回撤上升不少，但也使得ROI最高可來到414，
+方法就是風險提高。獲益也上升，以上程式碼中的參數為參考，可依據風險承受能力、獲益期望及個股表現來做些微調整。
+*/
