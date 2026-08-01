@@ -33,7 +33,7 @@ void BackTestEngine::run()
         peakEquity = max(peakEquity, currentEquity);
         max_drawDown = max(max_drawDown, (peakEquity - currentEquity) / peakEquity);
     }
-    // const auto &trade = my_ac.getTradeLog(); // 交易明細
+    const auto &trade = my_ac.getTradeLog(); // 交易明細
     // for (const auto &t : trade)
     // {
     //     cout << t.date << " " << t.type << " " << t.price << " " << t.shares << " " << t.fee << " " << t.tax << " " << t.totalAmount << " " << t.realizedProfit << "\n";
