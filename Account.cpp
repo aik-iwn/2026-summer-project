@@ -8,7 +8,7 @@ bool Account::buy(string date, double price, int share)
 {
     if (share <= 0)
     {
-        cerr << "[" << date << "] 股數不能小於等於0，交易失敗\n";
+        cerr << "[" << date << "] 買入股數不能小於等於0，交易失敗\n";
         return false;
     }
     double stockcost = price * share;
@@ -49,7 +49,7 @@ bool Account::sell(string date, double price, int share)
 {
     if (share <= 0)
     {
-        cerr << "[" << date << "] 股數不能小於等於0，交易失敗\n";
+        cerr << "[" << date << "] 賣出股數不能小於等於0，交易失敗\n";
         return false;
     }
     if (share > position)
