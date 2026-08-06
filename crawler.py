@@ -4,7 +4,7 @@ import pandas as pd
 ticker="2330.TW"
 period_str="10y"
 stock=yf.Ticker(ticker)
-data=stock.history(period_str)
+data=stock.history(period=period_str)
 # data=stock.history(start="2022-01-01",end="2022-12-31")
 data.reset_index(inplace=True)#將原本為索引值的日期列為新的一欄(inplace=True代表直接在原地修改)
 data['Date']=data['Date'].dt.strftime('%Y-%m-%d')#將原本Date欄的輸出格式改成這樣子

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Strategy.h"
+#include "ATR.h"
 #include "MonotonicQueue.h"
 
 class BreakoutStrategy : public Strategy
