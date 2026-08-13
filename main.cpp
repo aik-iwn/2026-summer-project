@@ -19,17 +19,17 @@ int main()
     KellyMAStrategy kellyMAstrategy;
     BreakoutStrategy breakoutstrategy;
 
-    cout << "-----執行dipbuy交易策略-----\n";
-    BackTestEngine engine1(1500000, dataset, &dipbuyerstrategy);
-    engine1.run();
-    cout << "ROI:" << engine1.ROI() << "\n";
-    cout << "-----dipbuy交易策略完成-----\n\n";
+    // cout << "-----執行dipbuy交易策略-----\n";
+    // BackTestEngine engine1(1500000, dataset, &dipbuyerstrategy);
+    // engine1.run();
+    // cout << "ROI:" << engine1.ROI() << "\n";
+    // cout << "-----dipbuy交易策略完成-----\n\n";
 
-    cout << "-----執行KellyMAStrategy交易策略-----\n";
-    BackTestEngine engine2(1500000, dataset, &kellyMAstrategy);
-    engine2.run();
-    cout << "ROI:" << engine2.ROI() << "\n";
-    cout << "-----KellyMAStrategy交易策略完成-----\n\n";
+    // cout << "-----執行KellyMAStrategy交易策略-----\n";
+    // BackTestEngine engine2(1500000, dataset, &kellyMAstrategy);
+    // engine2.run();
+    // cout << "ROI:" << engine2.ROI() << "\n";
+    // cout << "-----KellyMAStrategy交易策略完成-----\n\n";
 
     cout << "-----執行BreakoutStrategy交易策略-----\n";
     BackTestEngine engine3(1500000, dataset, &breakoutstrategy);

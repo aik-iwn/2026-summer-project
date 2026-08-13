@@ -3,13 +3,16 @@
 #include "ATR.h"
 #include "Strategy.h"
 #include "MonotonicQueue.h"
+#include "MovingAverage.h"
 #include <algorithm>
 
 class BreakoutStrategy : public Strategy
 {
 private:
-    DonchianQueue donchianqueue; // 唐奇安通道
-    ATR atr;                     // ATR指標協助計算買入多少量股票及停損線
+    DonchianQueue entry_dq; // 唐奇安通道(20日進場)
+    DonchianQueue exit_dq;  // 唐奇安通道(10日出場)
+    ATR atr;                // ATR指標協助計算買入多少量股票及停損線
+    MovingAverage MA200;    // 200日長均線
 
     bool has_position;
     double peak_price;          // 持有股票時的最高價
@@ -17,22 +20,28 @@ private:
     double risk_tolerance;      // 單筆所能容忍最大虧損比例
     double atr_multiplier;      // 停損容忍倍數
 public:
-    BreakoutStrategy(int size = 20, double risk_pct = 0.02, double multi = 3.0)
-        : donchianqueue(size),
-          atr(size),
+    BreakoutStrategy(int entry_size = 20, int exit_size = 20, double risk_pct = 0.05, double multi = 3)
+        : entry_dq(entry_size),
+          exit_dq(exit_size),
+          atr(14),
+          MA200(200),
           has_position(false),
           peak_price(0.0),
           trailing_stop_price(0.0),
           risk_tolerance(risk_pct),
           atr_multiplier(multi) {};
+
     Order generateOrder(const TradeData &today, const Account &ac) override
     {
-        double upper_band = donchianqueue.getUpperBand();
-        double lower_band = donchianqueue.getLowerBand();
+        double upper_band = entry_dq.getUpperBand();
+        double lower_band = exit_dq.getLowerBand();
         double current_atr = atr.getATR();
 
+        MA200.addSample(today.close);
+        bool is_bull_market = (today.close > MA200.getValue());
         Order order = {Signal::HOLD, 0};
-        if (donchianqueue.isReady() && atr.isReady())
+
+        if (MA200.isReady())
         {
             if (has_position) // 在有持股期間才會更新止損點及賣出股票
             {
@@ -45,7 +54,7 @@ public:
                 {
                     trailing_stop_price = new_stop_level;
                 }
-                if (today.low < trailing_stop_price || today.low < lower_band)
+                if (today.low < lower_band && today.close < trailing_stop_price)
                 {
                     order.action = Signal::SELL;
                     order.shares = ac.getPosition();
@@ -56,7 +65,7 @@ public:
             }
             else
             {
-                if (today.high > upper_band) // 如果在未持股情況下且又突破就會買入
+                if (today.high > upper_band && is_bull_market) // 如果在未持股情況下且又突破就會買入(要在多頭市場200MA之上)
                 {
                     double max_risk_amount = ac.getBalance() * risk_tolerance; // 允許最大虧損金額
                     double risk_per_share = current_atr * atr_multiplier;      // 每股將承擔的虧損風險
@@ -78,7 +87,8 @@ public:
                 }
             }
         }
-        donchianqueue.push(today.high, today.low);
+        entry_dq.push(today.high, today.low);
+        exit_dq.push(today.high, today.low);
         atr.push(today.high, today.low, today.close);
         return order;
     }
