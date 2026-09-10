@@ -10,9 +10,9 @@ class BreakoutStrategy : public Strategy
 {
 private:
     DonchianQueue entry_dq; // 唐奇安通道(20日進場)
-    DonchianQueue exit_dq;  // 唐奇安通道(10日出場)
+    DonchianQueue exit_dq;  // 唐奇安通道(20日出場)
     ATR atr;                // ATR指標協助計算買入多少量股票及停損線
-    MovingAverage MA200;    // 200日長均線
+    MovingAverage MA10;     // 10日短均線
 
     bool has_position;
     double peak_price;          // 持有股票時的最高價
@@ -20,11 +20,11 @@ private:
     double risk_tolerance;      // 單筆所能容忍最大虧損比例
     double atr_multiplier;      // 停損容忍倍數
 public:
-    BreakoutStrategy(int entry_size = 20, int exit_size = 20, double risk_pct = 0.05, double multi = 3)
+    BreakoutStrategy(int entry_size = 20, int exit_size = 20, double risk_pct = 1, double multi = 7)
         : entry_dq(entry_size),
           exit_dq(exit_size),
           atr(14),
-          MA200(200),
+          MA10(10),
           has_position(false),
           peak_price(0.0),
           trailing_stop_price(0.0),
@@ -37,11 +37,11 @@ public:
         double lower_band = exit_dq.getLowerBand();
         double current_atr = atr.getATR();
 
-        MA200.addSample(today.close);
-        bool is_bull_market = (today.close > MA200.getValue());
+        MA10.addSample(today.close);
+        bool is_bull_market = (today.close > MA10.getValue());
         Order order = {Signal::HOLD, 0};
 
-        if (MA200.isReady())
+        if (MA10.isReady())
         {
             if (has_position) // 在有持股期間才會更新止損點及賣出股票
             {
@@ -93,3 +93,9 @@ public:
         return order;
     }
 };
+/*
+本策略由三個指標共同協助完成，分別為唐奇安通道(進出場時機判斷)、ATR(計算買入多少量及停損線)、
+10MA(短均線用來判斷牛市，均線太長反而會流失掉好的買賣時機)。賣出方式為一次全部賣出，買入則是計
+算在此風險情況下應買入多少量(參照程式碼計算方式)，而上述所有控制參數為大量測試下所得出的最佳結
+果，可以依照個人對於風險及獲益要求來做些微調整，。
+*/
