@@ -40,8 +40,8 @@ private:
 
 public:
     Account(double initial_captial) : initialCapital(initial_captial), balance(initial_captial), position(0) {};
-    bool buy(std::string date, double price, int share);
-    bool sell(std::string date, double price, int share);
+    bool buy(const std::string &date, double price, int share);
+    bool sell(const std::string &date, double price, int share);
     double getInitialCapital() const { return initialCapital; };
     double getBalance() const { return balance; }; // 剩餘多少錢
     int getPosition() const { return position; };

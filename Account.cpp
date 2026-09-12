@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool Account::buy(string date, double price, int share)
+bool Account::buy(const string &date, double price, int share)
 {
     if (share <= 0)
     {
@@ -45,7 +45,7 @@ bool Account::buy(string date, double price, int share)
     return true;
 }
 
-bool Account::sell(string date, double price, int share)
+bool Account::sell(const string &date, double price, int share)
 {
     if (share <= 0)
     {
