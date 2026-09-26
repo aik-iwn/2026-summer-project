@@ -2,3 +2,6 @@ build/
 *.exe
 yfinance_test.py
 data.csv
+reports/
+plot_kline.py
+tsmc_candlestick.png

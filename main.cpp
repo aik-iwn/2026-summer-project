@@ -15,10 +15,11 @@ using namespace std;
 
 void executeBackTest(const string &strategyName, Strategy *strategy, const vector<TradeData> &dataset, double capital = 1500000)
 {
-    cout << "-----執行" << strategyName << "交易策略-----\n";
+    cout << "-----執行" << strategyName << "交易策略-----\n\n";
     BackTestEngine engine(capital, dataset, strategy);
     engine.run();
     cout << "ROI:" << engine.ROI() << "\n";
+    engine.exportAllReport(strategyName); // 輸出csv報表至reports資料夾
     cout << "-----" << strategyName << "交易策略完成-----\n";
 }
 
@@ -93,7 +94,7 @@ int main()
             cout << "[0] 離開系統\n\n";
             break;
         default:
-            cout << "輸入錯誤，請重新輸入\n";
+            cout << "輸入錯誤，請重新輸入\n\n";
             break;
         }
         std::chrono::duration<double, std::milli> elapsed = end - start;
