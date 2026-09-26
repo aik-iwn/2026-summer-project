@@ -2,6 +2,7 @@ build/
 *.exe
 yfinance_test.py
 data.csv
-reports/
+trades/
+equity/
 plot_kline.py
 tsmc_candlestick.png
