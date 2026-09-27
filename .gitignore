@@ -4,5 +4,4 @@ equity/
 *.exe
 yfinance_test.py
 data.csv
-plot_kline.py
-tsmc_candlestick.png
+*.html
