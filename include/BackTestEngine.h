@@ -31,4 +31,3 @@ public:
     double ROI();
     void exportAllReport(const std::string &filename) const; // 交易流水帳+每日真實資產曲線
 };
-// 在.h檔裡面不要使用using namspace std，避免命名域衝突，由於.h檔大家都會共用

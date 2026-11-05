@@ -115,7 +115,7 @@ for strat in strategy_configs:
         go.Scatter(
             x=sells['Date'],
             y=sells['Price'] * 1.03,
-            mode='markers',
+            mode='markers', 
             marker=dict(symbol='triangle-down', size=11, color=strat["sell_color"], line=dict(width=1, color='black')),
             name=f'{strat["name"]} (賣出 ▼)',
             visible=vis,
@@ -165,5 +165,5 @@ config = {
 
 output_html = "multi_strategy_signals.html"
 fig.write_html(output_html, config=config)
-print(f"🎉 交易檢視器已產出 ：{output_html} (正在打開瀏覽器...)")
+print(f"交易檢視器已產出 ：{output_html} (正在打開瀏覽器...)")
 fig.show(config=config)

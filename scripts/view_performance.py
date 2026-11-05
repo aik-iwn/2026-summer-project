@@ -172,5 +172,5 @@ config = {
 
 output_html = "portfolio_performance.html"
 fig.write_html(output_html, config=config)
-print(f"🎉 互動式績效儀表板已更新：{output_html} (正在打開瀏覽器...)")
+print(f"互動式績效儀表板已更新：{output_html} (正在打開瀏覽器...)")
 fig.show(config=config)

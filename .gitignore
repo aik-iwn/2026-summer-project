@@ -1,6 +1,7 @@
 build/
 trades/
 equity/
+.vscode/
 *.exe
 yfinance_test.py
 data.csv
