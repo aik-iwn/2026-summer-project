@@ -10,7 +10,7 @@ private:
 public:
     Order generateOrder(const TradeData &today, const Account &ac) override
     {
-        Order order;
+        Order order{};
         if (last_close < 0)
         {
             last_close = today.close;

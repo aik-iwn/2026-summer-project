@@ -138,7 +138,7 @@ cmake --build build
 
 # 4. Launch interactive backtesting engine
 cd build
-./my_app.exe
+./Debug/my_app.exe
 # -------------------------------------------------------------
 # ⚠️ INTERACTIVE CLI SELECTION REQUIRED:
 # When the prompt appears, you MUST enter a number:
