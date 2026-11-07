@@ -98,7 +98,7 @@ Extracted directly from the C++ execution logs, the table below compares the pas
 | **KellyMAStrategy** | +413.3% | 18.3% | 48.9%(22/45) | 45 | ~10.2 ms |
 | **BreakoutStrategy** | +1446.3% | 35.0% | 76.9% (10/13) | 13 | ~12.3 ms |
 
-* **Execution Efficiency**: The C++ engine completed the entire 10-year vector processing and multi-strategy simulation for `BreakoutStrategy` in just **40.7 ms**, proving the extreme processing speed achieved through memory-efficient structures (`std::vector` & `std::deque`) and algorithmic optimization.
+* **Execution Efficiency**: The C++ engine completed the entire 10-year vector processing and multi-strategy simulation for `BreakoutStrategy` in just **35.0 ms**, proving the extreme processing speed achieved through memory-efficient structures (`std::vector` & `std::deque`) and algorithmic optimization.
 
 ---
 
@@ -120,7 +120,7 @@ Extracted directly from the C++ execution logs, the table below compares the pas
 * **Granular Execution Transparency**: Illustrated above using the `BreakoutStrategy` on daily K-lines, the interactive Plotly visualizer overlays precise buy (green triangles) and sell (red triangles) triggers. This full-stack analytics pipeline enables clear inspection of algorithmic behavior across key market turning points and momentum shifts.
 ## 🚀 Getting Started
 
-Ensure you have a **C++17 compiler**, **CMake (>=3.15)**, and **Python (>=3.8)** installed. You can clone the project, build the engine, run the backtest, and render the dashboards using the unified command sequence below:
+> 💡 **Recommended Terminal**: Please run the commands in **Git Bash** (or macOS/Linux Terminal) to ensure comment syntax (`#`) compatibility.
 
 ```bash
 # 1. Clone repository & install dependencies
@@ -138,10 +138,17 @@ cmake --build build
 
 # 4. Launch interactive backtesting engine
 cd build
-.\my_app.exe
-cd ..
+./my_app.exe
+# -------------------------------------------------------------
+# ⚠️ INTERACTIVE CLI SELECTION REQUIRED:
+# When the prompt appears, you MUST enter a number:
+#   [1] ~ [3] : Run an individual strategy
+#   [4]       : Benchmark all strategies & export all CSV reports
+#   [0]       : Exit engine safely once simulation finishes
+# -------------------------------------------------------------
 
-# 5. Open interactive analytics dashboards in browser
+# 5. Return to root directory & launch interactive analytics dashboards
+cd ..
 python scripts/view_performance.py
 python scripts/view_signals.py
 ```
