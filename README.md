@@ -227,7 +227,7 @@ This project integrates high-performance systems programming with a modern data 
 The architecture is designed to scale from a single-asset prototyping framework into an institutional-grade algorithmic trading pipeline. Development milestones are outlined below:
 
 ### Phase 1: Core Foundation & Telemetry (Completed)
-- [x] **Event-Driven Backtesting Core**: Deterministic chronological event loop ($O(N)$) with FIFO fee/tax accounting.
+- [x] **Event-Driven Backtesting Core**: Deterministic chronological event loop O(N) with FIFO fee/tax accounting.
 - [x] **Algorithmic Signal Infrastructure**: Monotonic queue extremum lookup and ATR-based dynamic risk sizing.
 - [x] **Strategy Polymorphism**: Dynamic runtime strategy swapping via abstract base interfaces.
 - [x] **Full-Stack Telemetry**: Mark-to-Market equity tracking with Plotly interactive candlestick and drawdown analytics.
